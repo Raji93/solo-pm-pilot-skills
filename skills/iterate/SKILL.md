@@ -194,5 +194,3 @@ Non-goals:
 ## Handoff
 Ship, pause, hand off, or buy — then return the learnings to **`scope`** and start the next loop. If the results show the problem, metric, or approach was wrong, go back to **`scope`** directly.
 
-## Example
-See [`examples/artifacts/test-and-ship-plan.md`](../../examples/artifacts/test-and-ship-plan.md) — refinements, an experiment plan with pass bars, the ship/hand-off decision, and a reusable handoff structure.
