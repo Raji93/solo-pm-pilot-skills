@@ -27,8 +27,16 @@ Ideally the **handoff block from `build`**. Read these first and carry them thro
 
 If there's no block, reconstruct the equivalent before proceeding, plus the feedback and context (who it's for, data sensitivity, scale, who'd own it).
 
-## Required output shape
-Always produce this structure first:
+## Before you generate: confirm the format
+Ask the user one quick question — which format they want for the output:
+
+- **Markdown / in-chat** — fastest to read and edit; good while still running checks and refining.
+- **HTML one-pager** — a clean, styled, shareable artifact; best for the proof summary or an engineering handoff.
+
+Ask once and wait. Skip only if they already stated a preference. **Keep the four-section proof block and the PRD as monospace / code blocks** — they're meant to be copied and re-run, so field names and structure stay intact.
+
+## Required output shape — the proof block
+Always produce this structure first, in both formats:
 
 ```text
 # 1) What changed
@@ -61,11 +69,16 @@ monitoring_plan:        # what to sample once live, and the drift signal
 handoff_prd_path:       # if handing off
 ```
 
-Then add supporting detail:
-- rationale for each change
-- what is proven versus still uncertain
-- what should ship now versus later
-- what should be built, bought, or handed off
+Then add supporting detail: rationale for each change · what is proven versus still uncertain · what should ship now versus later · what should be built, bought, or handed off.
+
+### If Markdown: restraint rules
+- **No emoji** in headers or body.
+- **Ration bold** to the one load-bearing phrase per section.
+- Keep the proof block and the PRD as fenced code blocks so structure survives a copy-paste.
+- Beyond those, at most one table (usually the eval results). Everything else is prose.
+
+### If HTML: use the template
+Generate from `iterate-template.html` (in this skill folder). Fill the `{{PLACEHOLDERS}}`, delete unused sections, and **do not change the CSS**. The proof block renders in the monospace panel, eval results in the light table, and the decision (ship / pause / hand off / buy) is the one emphasized callout. Include the PRD section only in Full mode. Save as a `.html` artifact.
 
 ## Modes
 - **Compact** (small change, low stakes): the four-section block plus three bullets of reasoning. Skip the PRD.
@@ -193,4 +206,3 @@ Non-goals:
 
 ## Handoff
 Ship, pause, hand off, or buy — then return the learnings to **`scope`** and start the next loop. If the results show the problem, metric, or approach was wrong, go back to **`scope`** directly.
-
