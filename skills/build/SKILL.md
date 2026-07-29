@@ -22,9 +22,21 @@ A scoped plan, or at minimum: the assumption to test, who it's for, the constrai
 
 **Ask before inventing.** If the assumption isn't clear, ask for it — building the wrong thing fast is still building the wrong thing. **Timebox it:** state up front how long this build should take (hours for a mock, days for a thin prototype). If the estimate exceeds the learning value, say so and shrink the artifact.
 
-## Required output shape
+## Two outputs, one of them a document
+`build` produces two things:
+1. **The runnable artifact** — the prototype/mock/spreadsheet itself. If it's a UI, default to a single self-contained HTML file (see Visual bar).
+2. **The build brief** — the handoff block plus reasoning, which is what `iterate` reads next. The format question below governs *this brief*, not the artifact.
 
-Produce this block first. **Core fields always; extended fields in Full mode.**
+## Before you generate the brief: confirm the format
+Ask the user one quick question — which format they want for the build brief:
+
+- **Markdown / in-chat** — fastest to read and edit; good while still choosing tools or shrinking scope.
+- **HTML one-pager** — a clean, styled, shareable brief; best for a demo or handing to a stakeholder.
+
+Ask once and wait. Skip only if they already stated a preference. Either way, **keep the handoff block itself as a monospace / code block** — it's meant to be copied straight into `iterate`, so its field names stay intact.
+
+## Required output shape — the handoff block
+Produce this block first, in both formats. **Core fields always; extended fields in Full mode.**
 
 ```
 # core
@@ -51,22 +63,31 @@ Then add supporting notes — **reasoning, not a restatement of the block**:
 - where a real engineer is genuinely needed (be honest; don't oversell no-code)
 - a visual design note, if it's a UI artifact
 
+### If Markdown: restraint rules
+- **No emoji** in headers or body.
+- **Ration bold** to the one load-bearing phrase per section.
+- **At most two tables** beyond the handoff block — realistically the artifact-form table and the tool comparison. Everything else is prose.
+- Keep the handoff block as a fenced code block so field names survive a copy-paste.
+
+### If HTML: use the template
+Generate the brief from `build-template.html` (in this skill folder). Fill the `{{PLACEHOLDERS}}`, delete unused sections, and **do not change the CSS**. The handoff block renders in the template's monospace panel; the tool comparison renders in its light table. Save as a `.html` artifact. The runnable prototype stays a separate file.
+
 ## Choosing the artifact form
 Pick one and justify it in `why_this_form`:
 
 | Form | Best when the question is | Typical cost |
 |---|---|---|
-| **Fake door / landing test** | does anyone want this at all? | hours |
-| **Wizard-of-Oz / manual trial** | is the outcome valuable, before we automate it? | days |
-| **Clickable flow** | is the flow understandable? | hours |
-| **Thin working thing** | does the core mechanic actually work? | days |
-| **Model / spreadsheet** | do the numbers hold up? | hours |
-| **Doc / spec** | do we agree on what we're doing? | hours |
+| Fake door / landing test | does anyone want this at all? | hours |
+| Wizard-of-Oz / manual trial | is the outcome valuable, before we automate it? | days |
+| Clickable flow | is the flow understandable? | hours |
+| Thin working thing | does the core mechanic actually work? | days |
+| Model / spreadsheet | do the numbers hold up? | hours |
+| Doc / spec | do we agree on what we're doing? | hours |
 
 Not everything is an app. If a spreadsheet or a human behind the curtain answers the question, that's the right build.
 
 ## Tool map — platform-agnostic
-Let **constraints** pick the tool — data residency, existing stack, budget, control, speed — not brand loyalty. Always name an alternative.
+Let **constraints** pick the tool — data residency, existing stack, budget, control, speed — not brand loyalty. Always name an alternative. When the user asks how they'd build it elsewhere, or names a constraint that forces a trade-off, **render this as a comparison table** (platform · what you'd build there · effort · the trade-off) rather than a flat list.
 
 - **Models:** open-weight (Llama, Mistral, Qwen) for control/on-prem · hosted APIs (Anthropic Claude, OpenAI GPT, Google Gemini) for speed.
 - **Orchestration & retrieval:** LangChain, LlamaIndex · vector stores (pgvector, Qdrant, Weaviate, Pinecone).
@@ -79,9 +100,9 @@ State the constraint that drove the pick, e.g. *"hosted API — no sensitive dat
 ## Visual bar (UI artifacts)
 Make it feel intentional and credible, not production-grade:
 - **Single-file HTML by default**, no external dependencies or CDNs — a demo that needs the network is a demo that fails on stage.
-- One accent color on a neutral base; **two type sizes and one weight jump** carry the hierarchy. A system font stack is fine.
+- One accent color on a neutral base; two type sizes and one weight jump carry the hierarchy. A system font stack is fine.
 - Consistent spacing rhythm, generous whitespace, left-aligned body text.
-- Lightweight icons (emoji-style or inline SVG) where they speed comprehension.
+- Lightweight inline icons only where they speed comprehension — not decoration.
 - **Show the reasoning, not a black-box answer** — evidence beside every output is what makes a prototype trustworthy.
 - **Realistic sample data, never lorem ipsum.** Fake-looking data makes real logic look fake.
 
@@ -97,7 +118,7 @@ Make it feel intentional and credible, not production-grade:
 - **Compact** (small stakes): the core block + three bullets of reasoning. Nothing else.
 - **Full** (higher stakes): core + extended block, plus decision rationale, failure modes, readiness questions, and the demo script.
 
-## 🧍 Solo-PM check
+## Solo-PM check
 - **Timebox** — how long will this take, and does it beat the learning value?
 - **Solo-doable vs. needs someone** — what can you build alone this week; what needs a designer, a data pull, or an approval? Start that dependency now.
 - **Who reacts** — name the 3–5 real people who'll see it. An artifact nobody reacts to produced no signal.
@@ -112,5 +133,3 @@ Make it feel intentional and credible, not production-grade:
 
 ## Handoff
 Pass the artifact and its signals to **`iterate`** to refine it, prove it's good enough, and decide whether to ship, pause, or hand off. If the signal shows the assumption was wrong, go back to **`scope`**.
-
-
