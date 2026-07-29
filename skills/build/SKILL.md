@@ -113,5 +113,4 @@ Make it feel intentional and credible, not production-grade:
 ## Handoff
 Pass the artifact and its signals to **`iterate`** to refine it, prove it's good enough, and decide whether to ship, pause, or hand off. If the signal shows the assumption was wrong, go back to **`scope`**.
 
-## Example
-See [`examples/prototype/funnel-leak-finder.html`](../../examples/prototype/funnel-leak-finder.html) — a single-file prototype that shows its reasoning, with an on-page view of how it scales.
+
