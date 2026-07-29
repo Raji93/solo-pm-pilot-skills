@@ -69,8 +69,135 @@ Then add supporting notes — **reasoning, not a restatement of the block**:
 - **At most two tables** beyond the handoff block — realistically the artifact-form table and the tool comparison. Everything else is prose.
 - Keep the handoff block as a fenced code block so field names survive a copy-paste.
 
-### If HTML: use the template
-Generate the brief from `build-template.html` (in this skill folder). Fill the `{{PLACEHOLDERS}}`, delete unused sections, and **do not change the CSS**. The handoff block renders in the template's monospace panel; the tool comparison renders in its light table. Save as a `.html` artifact. The runnable prototype stays a separate file.
+### If HTML: emit this template inline
+Generate the brief using the exact template below. Fill the `{{PLACEHOLDERS}}`, delete unused sections, and **do not change the CSS**. The handoff block renders in the monospace panel; the tool comparison renders in the light table. Emit the filled-in HTML as a `.html` artifact. The runnable prototype stays a separate file.
+
+```html
+<!DOCTYPE html>
+<!--
+  BUILD BRIEF TEMPLATE
+  The build skill fills the {{PLACEHOLDERS}} and removes optional sections.
+  Do NOT edit the CSS. The runnable prototype is a SEPARATE file, not this brief.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Build Brief — {{ARTIFACT_NAME}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FBFBFA; --ink:#1C1B1A; --muted:#726F69; --faint:#9A968E;
+    --rule:#E7E4DC; --accent:#2F5D50; --accent-soft:#EAF0ED;
+    --warn:#9A3B25; --panel:#F3F2ED; --maxw:720px;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size:16px;line-height:1.62;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:72px 28px 96px;}
+  .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:0 0 14px;}
+  h1{font-family:"Newsreader",Georgia,serif;font-weight:500;font-size:clamp(32px,5.5vw,44px);line-height:1.08;letter-spacing:-.01em;margin:0 0 20px;}
+  .lede{font-family:"Newsreader",Georgia,serif;font-size:clamp(19px,2.6vw,22px);line-height:1.5;color:#33322F;font-weight:400;margin:0;}
+  .lede strong{font-weight:600;color:var(--ink);}
+  section{margin-top:48px;}
+  .label{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:0 0 16px;padding-bottom:9px;border-bottom:1px solid var(--rule);}
+  h3{font-size:15px;font-weight:600;margin:22px 0 4px;}
+  p{margin:0 0 14px;} p:last-child{margin-bottom:0;}
+  .muted{color:var(--muted);}
+  /* monospace handoff panel */
+  .panel{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:20px 22px;
+    font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px;line-height:1.7;color:#2A2925;overflow-x:auto;}
+  .panel .k{color:var(--accent);} .panel .c{color:var(--faint);}
+  table{width:100%;border-collapse:collapse;font-size:14.5px;margin-top:4px;}
+  th{text-align:left;font-weight:600;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);padding:0 14px 10px 0;border-bottom:1px solid var(--rule);}
+  td{padding:12px 14px 12px 0;border-bottom:1px solid var(--rule);vertical-align:top;}
+  tr td:last-child,tr th:last-child{padding-right:0;} .cost{color:var(--muted);white-space:nowrap;}
+  ul.clean{margin:0;padding:0;list-style:none;}
+  ul.clean li{padding:11px 0;border-top:1px solid var(--rule);}
+  ul.clean li:first-child{border-top:none;} ul.clean li b{font-weight:600;}
+  ol.steps{margin:0;padding:0;counter-reset:s;list-style:none;}
+  ol.steps li{padding:11px 0 11px 34px;border-top:1px solid var(--rule);position:relative;counter-increment:s;}
+  ol.steps li:first-child{border-top:none;}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:11px;font-family:"Newsreader",serif;color:var(--faint);}
+  .callout{background:var(--accent-soft);border:1px solid #CFDDD8;border-radius:12px;padding:20px 24px;margin-top:16px;}
+  .callout .label{border:none;padding:0;margin-bottom:8px;} .callout p{margin:0;} .callout b{font-weight:600;}
+  @media (max-width:560px){.wrap{padding:48px 20px 72px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="eyebrow">Build Brief</p>
+  <h1>{{ARTIFACT_NAME}}</h1>
+  <p class="lede">Testing one thing: <strong>{{PROOF_GOAL_one_sentence}}</strong></p>
+
+  <section>
+    <p class="label">Handoff block</p>
+    <div class="panel"><span class="c"># core</span><br>
+artifact_type:  {{ARTIFACT_TYPE}}<br>
+proof_goal:     {{PROOF_GOAL}}<br>
+success_signal: {{SUCCESS_SIGNAL}}<br>
+kill_signal:    {{KILL_SIGNAL}}<br>
+artifact_path:  {{ARTIFACT_PATH}}<br>
+tool_stack:     {{TOOL_STACK}}<br>
+fakes_or_stubs: {{FAKES_OR_STUBS}}<br>
+handoff_target: {{HANDOFF_TARGET}}</div>
+  </section>
+
+  <section>
+    <p class="label">Why this form</p>
+    <p>{{WHY_THIS_FORM}}</p>
+  </section>
+
+  <section>
+    <p class="label">Tool choice</p>
+    <p>{{TOOL_RATIONALE_constraint_that_drove_it}}</p>
+    <!-- OPTIONAL comparison table: include when the user weighs platforms -->
+    <table>
+      <thead><tr><th>Platform</th><th>What you'd build</th><th class="cost">Effort</th><th>Trade-off</th></tr></thead>
+      <tbody>
+        <!-- repeat one row per platform -->
+        <tr><td>{{PLATFORM}}</td><td>{{WHAT}}</td><td class="cost">{{EFFORT}}</td><td>{{TRADEOFF}}</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <p class="label">What's faked</p>
+    <ul class="clean">
+      <!-- repeat one li per faked/stubbed part -->
+      <li><b>{{FAKE_name}}</b> — {{FAKE_detail}}</li>
+    </ul>
+  </section>
+
+  <section>
+    <p class="label">Demo steps</p>
+    <ol class="steps">
+      <!-- 3–5 beats, plus an offline fallback -->
+      <li>{{STEP}}</li>
+    </ol>
+  </section>
+
+  <section>
+    <p class="label">Decision rationale &amp; risks</p>
+    <p>{{RATIONALE_what_you_considered_and_rejected}}</p>
+    <p class="muted">{{RISKS_and_where_a_real_engineer_is_needed}}</p>
+  </section>
+
+  <div class="callout">
+    <p class="label">Next</p>
+    <p>Hand to <b>{{HANDOFF_TARGET}}</b> — {{NEXT_one_line}}</p>
+  </div>
+
+</div>
+</body>
+</html>
+```
+
 
 ## Choosing the artifact form
 Pick one and justify it in `why_this_form`:
