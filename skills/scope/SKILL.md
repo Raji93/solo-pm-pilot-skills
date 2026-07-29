@@ -157,5 +157,3 @@ Exit criteria — confirm each, and fix or flag any "no":
 Pass the plan to **`build`** to make the smallest thing that tests the hypothesis.
 When the cycle completes, `iterate` feeds its learnings back here — **capture what you learned and re-scope**, rather than starting the next problem cold.
 
-## Example
-See [`examples/artifacts/plan.md`](../../examples/artifacts/plan.md) — an onboarding drop-off problem scoped with real benchmarks, precisely-defined metrics, and a counter-metric.
